@@ -1,0 +1,1917 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBT Informatika Kelas IX - SMP Negeri 2 Ngadirejo</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .font-mono-code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* Print Styles for Result Slip */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #print-area, #print-area * {
+                visibility: visible;
+            }
+            #print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none !important;
+                border: 1px solid #cbd5e1 !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- CUSTOM MODAL / MESSAGE BOX (Pengganti alert & confirm) -->
+    <div id="custom-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 border border-slate-200 transform transition-all">
+            <div class="flex items-center gap-3 mb-3">
+                <div id="modal-icon-box" class="w-10 h-10 rounded-full flex items-center justify-center text-lg bg-blue-100 text-blue-600">
+                    <i id="modal-icon" class="fa-solid fa-circle-info"></i>
+                </div>
+                <h3 id="modal-title" class="text-lg font-bold text-slate-800">Informasi</h3>
+            </div>
+            <p id="modal-message" class="text-slate-600 text-sm leading-relaxed mb-6"></p>
+            <div id="modal-actions" class="flex justify-end gap-3">
+                <button id="modal-cancel-btn" class="hidden px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition">Batal</button>
+                <button id="modal-confirm-btn" class="px-5 py-2 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 shadow-sm transition">Mengerti</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WARNING BANNER (Full Screen / Tab Switch) -->
+    <div id="security-banner" class="hidden fixed top-16 left-1/2 -translate-x-1/2 z-40 bg-amber-600 text-white px-5 py-2.5 rounded-full shadow-lg flex items-center gap-3 text-xs sm:text-sm font-medium animate-bounce">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span id="security-banner-text">Peringatan: Harap tetap berada di mode layar penuh dan tidak berpindah tab!</span>
+        <button onclick="requestFullScreenMode()" class="bg-white text-amber-700 px-3 py-1 rounded-full text-xs font-bold hover:bg-amber-50">Layar Penuh</button>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- HALAMAN 1: LOGIN & IDENTITAS PESERTA                                  -->
+    <!-- ===================================================================== -->
+    <section id="login-screen" class="flex-1 flex items-center justify-center p-4 sm:p-6">
+        <div class="max-w-4xl w-full bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+            
+            <!-- Left Info Panel -->
+            <div class="lg:col-span-5 bg-gradient-to-br from-blue-700 via-blue-800 to-indigo-900 text-white p-7 sm:p-8 flex flex-col justify-between">
+                <div>
+                    <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide mb-6">
+                        <i class="fa-solid fa-desktop"></i>
+                        <span>COMPUTER BASED TEST (CBT)</span>
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl font-extrabold leading-tight mb-2">SMP NEGERI 2 NGADIREJO</h1>
+                    <p class="text-blue-200 text-sm font-medium mb-6">Asesmen Sumatif Akhir Semester 1</p>
+
+                    <div class="space-y-3 bg-white/10 rounded-2xl p-4 border border-white/15 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-blue-200">Mata Pelajaran</span>
+                            <span class="font-bold">Informatika</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-blue-200">Kelas / Semester</span>
+                            <span class="font-bold">IX (Sembilan) / 1</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-blue-200">Guru Pengampu</span>
+                            <span class="font-bold">Budi Winarno, S.Kom.</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-blue-200">KKTP</span>
+                            <span class="font-bold bg-emerald-500/30 text-emerald-200 px-2.5 py-0.5 rounded-md">80</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 pt-4 border-t border-white/15 text-xs text-blue-200 flex items-center justify-between">
+                    <span><i class="fa-regular fa-clock mr-1"></i> Waktu Real-Time:</span>
+                    <span id="login-realtime-clock" class="font-mono-code font-semibold text-white">--:--:-- WIB</span>
+                </div>
+            </div>
+
+            <!-- Right Form Panel -->
+            <div class="lg:col-span-7 p-7 sm:p-8 flex flex-col justify-center">
+                <h2 class="text-xl font-bold text-slate-800 mb-1">Identitas Peserta Ujian</h2>
+                <p class="text-slate-500 text-sm mb-6">Silakan lengkapi data diri Anda sebelum memulai pengerjaan soal.</p>
+
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label for="student-name" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Nama Lengkap Siswa</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                            <input type="text" id="student-name" required placeholder="Contoh: Ahmad Fauzi Pratama"
+                                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm font-medium transition">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="student-class" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Kelas</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                                    <i class="fa-solid fa-chalkboard-user"></i>
+                                </span>
+                                <select id="student-class" required
+                                    class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm font-medium bg-white transition">
+                                    <option value="">-- Pilih Kelas --</option>
+                                    <option value="IX A">IX A</option>
+                                    <option value="IX B">IX B</option>
+                                    <option value="IX C">IX C</option>
+                                    <option value="IX D">IX D</option>
+                                    <option value="IX E">IX E</option>
+                                    <option value="IX F">IX F</option>
+                                    <option value="IX G">IX G</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="student-absent" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Nomor Absen</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                                    <i class="fa-solid fa-hashtag"></i>
+                                </span>
+                                <input type="number" id="student-absent" min="1" max="45" required placeholder="1 - 40"
+                                    class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-sm font-medium transition">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tata Tertib Ujian -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 mt-2">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 mb-2 flex items-center gap-1.5">
+                            <i class="fa-solid fa-circle-exclamation text-blue-600"></i> Ketentuan Pengerjaan CBT:
+                        </h3>
+                        <ul class="text-xs text-slate-600 space-y-1.5 list-disc list-inside">
+                            <li>Dari <strong>60 bank soal</strong>, sistem menampilkan <strong>50 soal acak</strong> (30 Reguler & 20 HOTS) beserta opsi jawaban yang diacak.</li>
+                            <li>Waktu maksimal pengerjaan adalah <strong>90 menit</strong>.</li>
+                            <li>Tombol <strong>Kumpulkan Ujian</strong> hanya aktif setelah waktu berjalan minimal <strong>40 menit</strong>.</li>
+                            <li>Sistem akan mengaktifkan mode <strong>Layar Penuh (Full Screen)</strong> secara otomatis saat ujian dimulai.</li>
+                        </ul>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full mt-2 bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-blue-600/25 transition flex items-center justify-center gap-2 text-sm sm:text-base">
+                        <span>Mulai Ujian Sekarang</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- HALAMAN 2: AREA PENGERJAAN CBT                                        -->
+    <!-- ===================================================================== -->
+    <section id="exam-screen" class="hidden flex-1 flex flex-col h-screen overflow-hidden">
+        
+        <!-- Top Header Bar -->
+        <header class="bg-white border-b border-slate-200 px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3 shadow-sm z-20">
+            <!-- School & Subject Info -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center font-bold text-lg shadow-sm">
+                    <i class="fa-solid fa-laptop-code"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-extrabold text-slate-800 text-sm sm:text-base leading-none">SMPN 2 NGADIREJO</h1>
+                        <span class="hidden sm:inline-block text-[11px] font-bold bg-blue-50 text-blue-700 px-2 py-0.5 rounded-md border border-blue-200">INFORMATIKA IX</span>
+                    </div>
+                    <p id="header-student-info" class="text-xs text-slate-500 mt-1 font-medium">Siswa: - | Kelas: -</p>
+                </div>
+            </div>
+
+            <!-- Real-time Clock, Countdown & Fullscreen Controls -->
+            <div class="flex items-center gap-2 sm:gap-4 ml-auto">
+                <!-- Real-Time Clock -->
+                <div class="hidden md:flex flex-col items-end bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
+                    <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Waktu Real-Time</span>
+                    <span id="exam-realtime-clock" class="font-mono-code text-xs font-bold text-slate-700">--:--:-- WIB</span>
+                </div>
+
+                <!-- Countdown Timer -->
+                <div id="countdown-box" class="flex items-center gap-2.5 bg-blue-50 border border-blue-200 px-3.5 py-1.5 rounded-xl">
+                    <i class="fa-regular fa-hourglass-half text-blue-600 animate-pulse"></i>
+                    <div>
+                        <span class="block text-[10px] uppercase font-bold text-blue-500 leading-none">Sisa Waktu</span>
+                        <span id="countdown-timer" class="font-mono-code text-sm sm:text-base font-extrabold text-blue-800">90:00</span>
+                    </div>
+                </div>
+
+                <!-- Fullscreen Toggle -->
+                <button onclick="toggleFullScreen()" title="Mode Layar Penuh"
+                    class="p-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition border border-slate-200">
+                    <i id="fullscreen-icon" class="fa-solid fa-expand"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <div class="flex-1 flex flex-col lg:flex-row overflow-hidden">
+            
+            <!-- Question Area (Left / Center) -->
+            <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 flex flex-col justify-between">
+                <div class="max-w-3xl w-full mx-auto">
+                    <!-- Question Metadata Header -->
+                    <div class="flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-200">
+                        <div class="flex items-center gap-2.5">
+                            <span class="bg-slate-800 text-white font-bold text-sm px-3.5 py-1.5 rounded-xl">
+                                Soal No. <span id="current-q-number">1</span> / 50
+                            </span>
+                            <span id="current-q-badge" class="text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200">
+                                Reguler
+                            </span>
+                        </div>
+                        <span id="current-q-topic" class="text-xs font-medium text-slate-500 bg-slate-200/70 px-3 py-1 rounded-lg">
+                            Topik: Berpikir Komputasional
+                        </span>
+                    </div>
+
+                    <!-- Question Card -->
+                    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 sm:p-7 mb-6">
+                        <div id="question-text" class="text-slate-800 text-base sm:text-lg leading-relaxed font-medium mb-6 space-y-3">
+                            <!-- Question content injected here -->
+                        </div>
+
+                        <!-- Options List -->
+                        <div id="options-container" class="space-y-3">
+                            <!-- Option buttons injected here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation Controls -->
+                <div class="max-w-3xl w-full mx-auto pt-2 pb-4 flex flex-wrap items-center justify-between gap-3">
+                    <button id="btn-prev" onclick="prevQuestion()"
+                        class="px-4 sm:px-5 py-2.5 rounded-xl font-semibold text-sm bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-chevron-left"></i>
+                        <span>Sebelumnya</span>
+                    </button>
+
+                    <button id="btn-doubt" onclick="toggleDoubt()"
+                        class="px-4 sm:px-5 py-2.5 rounded-xl font-semibold text-sm bg-amber-100 border border-amber-300 text-amber-800 hover:bg-amber-200 transition flex items-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-flag"></i>
+                        <span id="btn-doubt-text">Ragu-ragu</span>
+                    </button>
+
+                    <button id="btn-next" onclick="nextQuestion()"
+                        class="px-4 sm:px-5 py-2.5 rounded-xl font-semibold text-sm bg-blue-600 text-white hover:bg-blue-700 transition flex items-center gap-2 shadow-sm">
+                        <span>Selanjutnya</span>
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+                </div>
+            </main>
+
+            <!-- Sidebar Navigation & Submit Panel (Right) -->
+            <aside class="w-full lg:w-80 bg-white border-t lg:border-t-0 lg:border-l border-slate-200 flex flex-col justify-between p-4 sm:p-5 overflow-y-auto max-h-[42vh] lg:max-h-none">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-grip text-blue-600"></i> Navigasi Nomor Soal
+                        </h3>
+                        <span id="answered-counter" class="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full">0 / 50 Dijawab</span>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="grid grid-cols-3 gap-1.5 text-[11px] text-slate-600 mb-3 bg-slate-50 p-2 rounded-xl border border-slate-200">
+                        <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-emerald-500 inline-block"></span> Dijawab</div>
+                        <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-amber-400 inline-block"></span> Ragu</div>
+                        <div class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-slate-200 inline-block"></span> Kosong</div>
+                    </div>
+
+                    <!-- Number Grid (1-50) -->
+                    <div id="question-grid" class="grid grid-cols-10 lg:grid-cols-5 gap-1.5 mb-5">
+                        <!-- Grid buttons injected here -->
+                    </div>
+                </div>
+
+                <!-- Submit Button Container -->
+                <div class="pt-3 border-t border-slate-200">
+                    <div id="min-time-notice" class="text-[11px] text-center text-slate-500 mb-2 bg-slate-100 py-1.5 px-2 rounded-lg font-medium">
+                        <i class="fa-solid fa-lock text-amber-600 mr-1"></i>
+                        Dapat dikumpulkan dalam <span id="min-time-countdown" class="font-mono-code font-bold text-slate-800">40:00</span>
+                    </div>
+                    <button id="btn-submit-exam" onclick="confirmSubmitExam()" disabled
+                        class="w-full py-3 px-4 rounded-xl font-bold text-sm text-white bg-slate-400 cursor-not-allowed transition flex items-center justify-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Kumpulkan Ujian</span>
+                    </button>
+                </div>
+            </aside>
+
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- HALAMAN 3: HASIL UJIAN & UNDUH BUKTI NILAI                            -->
+    <!-- ===================================================================== -->
+    <section id="result-screen" class="hidden flex-1 py-8 px-4 sm:px-6 overflow-y-auto">
+        <div class="max-w-3xl mx-auto">
+            
+            <!-- Printable Result Card -->
+            <div id="print-area" class="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden mb-6">
+                <!-- Kop Sekolah -->
+                <div class="bg-gradient-to-r from-slate-800 to-slate-900 text-white p-6 sm:p-8 text-center border-b-4 border-blue-600">
+                    <p class="text-xs uppercase tracking-widest text-blue-300 font-bold mb-1">Pemerintah Kabupaten Temanggung • Dinas Pendidikan</p>
+                    <h1 class="text-xl sm:text-2xl font-extrabold tracking-wide">SMP NEGERI 2 NGADIREJO</h1>
+                    <p class="text-xs sm:text-sm text-slate-300 mt-1">Laporan Hasil Asesmen Sumatif (CBT) • Mata Pelajaran Informatika Kelas IX Semester 1</p>
+                </div>
+
+                <div class="p-6 sm:p-8">
+                    <!-- Status Banner -->
+                    <div id="kktp-status-banner" class="rounded-2xl p-4 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 border">
+                        <div class="flex items-center gap-3.5 text-center sm:text-left">
+                            <div id="kktp-icon-box" class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shrink-0">
+                                <i id="kktp-icon" class="fa-solid fa-award"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider opacity-80">Status Ketercapaian (KKTP: 80)</span>
+                                <h2 id="kktp-status-text" class="text-lg sm:text-xl font-extrabold">TUNTAS / MELAMPAUI KKTP</h2>
+                            </div>
+                        </div>
+                        <div class="text-center sm:text-right bg-white/80 px-5 py-2.5 rounded-xl border border-black/5">
+                            <span class="block text-[11px] font-bold uppercase text-slate-500">Nilai Akhir</span>
+                            <span id="final-score-display" class="text-3xl sm:text-4xl font-black text-slate-900">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Identitas Siswa Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200 mb-6 text-sm">
+                        <div class="space-y-2">
+                            <div class="flex justify-between border-b border-slate-200 pb-1.5">
+                                <span class="text-slate-500">Nama Peserta</span>
+                                <span id="res-name" class="font-bold text-slate-800">-</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-200 pb-1.5">
+                                <span class="text-slate-500">Kelas / No. Absen</span>
+                                <span id="res-class-absent" class="font-bold text-slate-800">-</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">Guru Pengampu</span>
+                                <span class="font-bold text-slate-800">Budi Winarno, S.Kom.</span>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between border-b border-slate-200 pb-1.5">
+                                <span class="text-slate-500">Tanggal Ujian</span>
+                                <span id="res-date" class="font-bold text-slate-800">-</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-200 pb-1.5">
+                                <span class="text-slate-500">Durasi Pengerjaan</span>
+                                <span id="res-duration" class="font-bold text-slate-800">-</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">KKTP Mata Pelajaran</span>
+                                <span class="font-bold text-blue-700">80 (Skala 100)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rincian Statistik Jawaban -->
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Rincian Analisis Jawaban</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                        <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl text-center">
+                            <span class="block text-xs font-semibold text-emerald-700 mb-1">Jawaban Benar</span>
+                            <span id="res-correct" class="text-2xl font-extrabold text-emerald-800">0</span>
+                            <span class="block text-[11px] text-emerald-600 mt-0.5">dari 50 soal</span>
+                        </div>
+                        <div class="bg-rose-50 border border-rose-200 p-4 rounded-2xl text-center">
+                            <span class="block text-xs font-semibold text-rose-700 mb-1">Jawaban Salah</span>
+                            <span id="res-wrong" class="text-2xl font-extrabold text-rose-800">0</span>
+                            <span class="block text-[11px] text-rose-600 mt-0.5">termasuk kosong</span>
+                        </div>
+                        <div class="bg-blue-50 border border-blue-200 p-4 rounded-2xl text-center">
+                            <span class="block text-xs font-semibold text-blue-700 mb-1">Benar Reguler</span>
+                            <span id="res-reguler" class="text-2xl font-extrabold text-blue-800">0 / 30</span>
+                            <span class="block text-[11px] text-blue-600 mt-0.5">Soal C1 - C3</span>
+                        </div>
+                        <div class="bg-purple-50 border border-purple-200 p-4 rounded-2xl text-center">
+                            <span class="block text-xs font-semibold text-purple-700 mb-1">Benar HOTS</span>
+                            <span id="res-hots" class="text-2xl font-extrabold text-purple-800">0 / 20</span>
+                            <span class="block text-[11px] text-purple-600 mt-0.5">Soal C4 - C6</span>
+                        </div>
+                    </div>
+
+                    <!-- Footer Tanda Tangan untuk Bukti Cetak -->
+                    <div class="flex justify-between items-end pt-4 border-t border-slate-200 text-xs text-slate-500">
+                        <div>
+                            <p>Dicetak otomatis oleh Sistem CBT Informatika</p>
+                            <p id="res-timestamp" class="font-mono-code mt-0.5">-</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="mb-8">Guru Mata Pelajaran,</p>
+                            <p class="font-bold text-slate-800 underline">Budi Winarno, S.Kom.</p>
+                            <p>SMP Negeri 2 Ngadirejo</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons (No Print) -->
+            <div class="no-print flex flex-wrap items-center justify-center gap-3">
+                <button onclick="downloadCSV()"
+                    class="px-5 py-3 rounded-xl font-bold text-sm bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/20 transition flex items-center gap-2">
+                    <i class="fa-solid fa-file-csv text-lg"></i>
+                    <span>Unduh Nilai (CSV / Excel)</span>
+                </button>
+
+                <button onclick="downloadHTMLReport()"
+                    class="px-5 py-3 rounded-xl font-bold text-sm bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/20 transition flex items-center gap-2">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Simpan Bukti Hasil (HTML)</span>
+                </button>
+
+                <button onclick="window.print()"
+                    class="px-5 py-3 rounded-xl font-bold text-sm bg-slate-800 hover:bg-slate-900 text-white shadow-lg transition flex items-center gap-2">
+                    <i class="fa-solid fa-print"></i>
+                    <span>Cetak / Simpan PDF</span>
+                </button>
+
+                <button onclick="resetAndRestart()"
+                    class="px-5 py-3 rounded-xl font-bold text-sm bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 transition flex items-center gap-2">
+                    <i class="fa-solid fa-rotate-right"></i>
+                    <span>Ujian Baru</span>
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- JAVASCRIPT: BANK SOAL (60 SOAL) & ENGINE CBT                          -->
+    <!-- ===================================================================== -->
+    <script>
+        /**
+         * BANK SOAL INFORMATIKA KELAS 9 SEMESTER 1
+         * Total: 60 Soal (36 Reguler + 24 HOTS)
+         * Setiap soal mencakup indikator pembelajaran yang diminta.
+         */
+        const QUESTION_BANK = [
+            // ================= 36 SOAL REGULER (C1 - C3) =================
+            {
+                id: 1, type: 'Reguler', topic: 'Berpikir Komputasional',
+                question: 'Berpikir komputasional (Computational Thinking) adalah metode penyelesaian masalah yang dilakukan dengan cara...',
+                options: [
+                    'Menerapkan teknik ilmu komputer untuk memecahkan masalah secara sistematis, logis, dan efisien agar dapat dijalankan oleh manusia maupun komputer',
+                    'Menghafalkan seluruh bahasa pemrograman tingkat tinggi agar dapat merakit perangkat keras komputer',
+                    'Menggunakan kalkulator dan aplikasi pengolah angka untuk menghitung semua permasalahan matematika',
+                    'Memperbaiki kerusakan komponen fisik komputer seperti monitor, keyboard, dan motherboard'
+                ],
+                answer: 0
+            },
+            {
+                id: 2, type: 'Reguler', topic: 'Pengenalan Pola',
+                question: 'Perhatikan barisan bilangan berikut: 3, 7, 15, 31, 63, ... Bilangan yang tepat untuk mengisi titik-titik tersebut berdasarkan polanya adalah...',
+                options: [
+                    '127',
+                    '126',
+                    '95',
+                    '125'
+                ],
+                answer: 0
+            },
+            {
+                id: 3, type: 'Reguler', topic: 'Dekomposisi',
+                question: 'Dalam mempersiapkan acara perpisahan kelas IX, ketua panitia membagi tugas menjadi seksi acara, konsumsi, perlengkapan, dan dokumentasi. Teknik berpikir komputasional yang diterapkan adalah...',
+                options: [
+                    'Dekomposisi (Decomposition)',
+                    'Abstraksi (Abstraction)',
+                    'Pengenalan Pola (Pattern Recognition)',
+                    'Algoritma (Algorithm)'
+                ],
+                answer: 0
+            },
+            {
+                id: 4, type: 'Reguler', topic: 'Abstraksi',
+                question: 'Ketika membuat denah lokasi SMP Negeri 2 Ngadirejo untuk undangan rapat wali murid, pembuat denah hanya menggambar jalan utama dan nama tempat penting tanpa menggambar pohon atau warna rumah warga. Hal ini merupakan penerapan dari...',
+                options: [
+                    'Abstraksi, yaitu menyaring informasi yang penting dan mengabaikan detail yang tidak relevan',
+                    'Dekomposisi, yaitu memecah peta menjadi beberapa bagian kelurahan',
+                    'Algoritma, yaitu menyusun langkah perjalanan dari rumah ke sekolah',
+                    'Pengenalan pola, yaitu mencari kesamaan bentuk bangunan sekolah'
+                ],
+                answer: 0
+            },
+            {
+                id: 5, type: 'Reguler', topic: 'Analisis Data - Tabel',
+                question: 'Pada aplikasi pengolah lembar kerja (spreadsheet), perpotongan antara baris (row) yang ditandai angka dan kolom (column) yang ditandai huruf disebut...',
+                options: [
+                    'Sel (Cell)',
+                    'Range',
+                    'Worksheet',
+                    'Formula Bar'
+                ],
+                answer: 0
+            },
+            {
+                id: 6, type: 'Reguler', topic: 'Pengolahan Data Sederhana',
+                question: 'Jika sel B2 berisi nilai 80, B3 berisi 85, B4 berisi 90, dan B5 berisi 75, maka hasil dari rumus <code class="font-mono-code bg-slate-100 px-1.5 py-0.5 rounded">=AVERAGE(B2:B5)</code> adalah...',
+                options: [
+                    '82,5',
+                    '330',
+                    '85',
+                    '80'
+                ],
+                answer: 0
+            },
+            {
+                id: 7, type: 'Reguler', topic: 'Pengurutan Data',
+                question: 'Fitur <strong>Sort Z to A</strong> pada aplikasi pengolah data digunakan untuk mengurutkan data teks berdasarkan kriteria...',
+                options: [
+                    'Menurun (Descending) dari abjad Z menuju A',
+                    'Menaik (Ascending) dari abjad A menuju Z',
+                    'Acak berdasarkan warna latar belakang sel',
+                    'Berdasarkan jumlah karakter huruf paling sedikit'
+                ],
+                answer: 0
+            },
+            {
+                id: 8, type: 'Reguler', topic: 'Kesimpulan Data',
+                question: 'Data peminjaman buku perpustakaan SMPN 2 Ngadirejo menunjukkan: Senin (25 buku), Selasa (30 buku), Rabu (45 buku), Kamis (40 buku), Jumat (15 buku). Kesimpulan yang sesuai dengan data tersebut adalah...',
+                options: [
+                    'Peminjaman buku tertinggi terjadi pada hari Rabu dan terendah pada hari Jumat',
+                    'Jumlah peminjaman buku selalu meningkat setiap hari dari Senin sampai Jumat',
+                    'Hari Jumat memiliki jumlah peminjaman lebih banyak daripada hari Senin',
+                    'Rata-rata peminjaman buku per hari adalah di atas 50 buku'
+                ],
+                answer: 0
+            },
+            {
+                id: 9, type: 'Reguler', topic: 'Pencarian Data',
+                question: 'Untuk menampilkan hanya data siswa kelas IX C dari tabel daftar nilai seluruh siswa kelas IX yang berjumlah 220 baris, fitur yang paling tepat digunakan adalah...',
+                options: [
+                    'Filter',
+                    'Merge & Center',
+                    'Wrap Text',
+                    'Conditional Formatting'
+                ],
+                answer: 0
+            },
+            {
+                id: 10, type: 'Reguler', topic: 'Menyimpulkan Pola Data',
+                question: 'Seorang pedagang mencatat penjualan es teh: suhu 26°C terjual 30 gelas, suhu 28°C terjual 45 gelas, suhu 30°C terjual 60 gelas, suhu 32°C terjual 75 gelas. Pola yang dapat disimpulkan dari data tersebut adalah...',
+                options: [
+                    'Setiap kenaikan suhu udara sebesar 2°C, penjualan es teh bertambah 15 gelas',
+                    'Setiap kenaikan suhu udara sebesar 1°C, penjualan es teh berkurang 15 gelas',
+                    'Penjualan es teh tidak dipengaruhi oleh perubahan suhu udara',
+                    'Pada suhu 34°C dipastikan penjualan es teh akan turun menjadi 50 gelas'
+                ],
+                answer: 0
+            },
+            {
+                id: 11, type: 'Reguler', topic: 'Penyajian Data',
+                question: 'Bentuk penyajian data visual yang paling sesuai untuk menggambarkan proporsi atau persentase pilihan ekstrakurikuler siswa (misalnya Pramuka 40%, PMR 25%, Futsal 20%, Paskibra 15%) terhadap keseluruhan siswa adalah...',
+                options: [
+                    'Diagram Lingkaran (Pie Chart)',
+                    'Diagram Garis (Line Chart)',
+                    'Diagram Pencar (Scatter Plot)',
+                    'Tabel Distribusi Frekuensi Tunggal'
+                ],
+                answer: 0
+            },
+            {
+                id: 12, type: 'Reguler', topic: 'Menafsirkan Data',
+                question: 'Fungsi <code class="font-mono-code bg-slate-100 px-1.5 py-0.5 rounded">=COUNTIF(C2:C31, ">=80")</code> pada daftar nilai Informatika menghasilkan angka 24 dari 30 siswa. Tafsiran yang benar dari hasil pengolahan data tersebut adalah...',
+                options: [
+                    'Terdapat 24 siswa yang telah mencapai atau melampaui KKTP 80',
+                    'Nilai rata-rata kelas tersebut adalah 24 dari skala 80',
+                    'Ada 24 siswa yang mendapatkan nilai tepat sama dengan 80',
+                    'Sebanyak 24 siswa harus mengikuti program remidial'
+                ],
+                answer: 0
+            },
+            {
+                id: 13, type: 'Reguler', topic: 'Perbandingan Data',
+                question: 'Dalam tabel inventaris laboratorium komputer terdapat kolom: <em>No, Kode Barang, Nama Perangkat, Tahun Pengadaan, Kondisi,</em> dan <em>Jumlah</em>. Jika kepala laboratorium ingin membandingkan banyaknya unit setiap jenis perangkat, dua kolom utama yang diperlukan adalah...',
+                options: [
+                    'Nama Perangkat dan Jumlah',
+                    'No dan Kode Barang',
+                    'Tahun Pengadaan dan Kondisi',
+                    'Kode Barang dan Tahun Pengadaan'
+                ],
+                answer: 0
+            },
+            {
+                id: 14, type: 'Reguler', topic: 'Pengelompokan Data',
+                question: 'Pengelompokan data siswa berdasarkan predikat nilai (Sangat Baik: 90-100, Baik: 80-89, Cukup: 70-79, Perlu Bimbingan: <70) bertujuan untuk...',
+                options: [
+                    'Memudahkan identifikasi kategori capaian belajar siswa untuk tindak lanjut pembelajaran',
+                    'Menghapus data siswa yang nilainya berada di bawah kriteria ketuntasan',
+                    'Mengubah nilai asli siswa menjadi huruf agar tidak diketahui orang tua',
+                    'Mengurutkan nama siswa berdasarkan abjad dari A sampai Z'
+                ],
+                answer: 0
+            },
+            {
+                id: 15, type: 'Reguler', topic: 'Hasil Pengurutan Data',
+                question: 'Diberikan data berat badan (kg): 48, 52, 45, 60, 50. Jika dilakukan pengurutan secara <em>Ascending</em> (menaik), maka urutan data yang benar adalah...',
+                options: [
+                    '45, 48, 50, 52, 60',
+                    '60, 52, 50, 48, 45',
+                    '48, 45, 50, 52, 60',
+                    '45, 50, 48, 52, 60'
+                ],
+                answer: 0
+            },
+            {
+                id: 16, type: 'Reguler', topic: 'Keputusan Berbasis Data',
+                question: 'Hasil survei kantin sehat menunjukkan 85% siswa membawa botol minum sendiri (tumbler), sedangkan penjualan minuman kemasan plastik turun drastis. Keputusan yang paling tepat diambil pengelola kantin adalah...',
+                options: [
+                    'Menyediakan stasiun isi ulang air minum higienis dan mengurangi stok minuman kemasan plastik sekali pakai',
+                    'Mewajibkan seluruh siswa membeli minuman kemasan plastik setiap jam istirahat',
+                    'Menutup layanan penjualan makanan dan minuman di kantin sekolah',
+                    'Menaikkan harga air mineral kemasan menjadi dua kali lipat'
+                ],
+                answer: 0
+            },
+            {
+                id: 17, type: 'Reguler', topic: 'Nilai Terbesar pada Tabel',
+                question: 'Untuk menemukan nilai ujian tertinggi dari sekumpulan data nilai yang berada pada rentang sel D5 sampai D40 di Microsoft Excel / Google Sheets, rumus yang digunakan adalah...',
+                options: [
+                    '=MAX(D5:D40)',
+                    '=MIN(D5:D40)',
+                    '=SUM(D5:D40)',
+                    '=LARGE(D5:D40)'
+                ],
+                answer: 0
+            },
+            {
+                id: 18, type: 'Reguler', topic: 'Manfaat Analisis Data',
+                question: 'Berikut ini yang merupakan manfaat utama dari kegiatan analisis data dalam kehidupan sehari-hari maupun dunia pendidikan adalah...',
+                options: [
+                    'Membantu pengambilan keputusan yang objektif dan akurat berdasarkan fakta serta pola yang terukur',
+                    'Memperbanyak ukuran file dokumen agar kapasitas penyimpanan cepat penuh',
+                    'Menghindari penggunaan teknologi komputer dalam mengolah informasi penting',
+                    'Membuat data menjadi sulit dibaca oleh pihak yang tidak berkepentingan'
+                ],
+                answer: 0
+            },
+            {
+                id: 19, type: 'Reguler', topic: 'Kesimpulan Data',
+                question: 'Data kehadiran ekstrakurikuler Robotika bulan Oktober: Minggu ke-1 (28 siswa), Minggu ke-2 (27 siswa), Minggu ke-3 (28 siswa), Minggu ke-4 (28 siswa) dari total 28 anggota. Kesimpulan yang paling tepat adalah...',
+                options: [
+                    'Tingkat partisipasi dan kedisiplinan anggota ekstrakurikuler Robotika sangat tinggi dan stabil (di atas 96%)',
+                    'Minat siswa terhadap ekstrakurikuler Robotika mengalami penurunan tajam setiap minggunya',
+                    'Pada minggu kedua terdapat 5 siswa yang tidak hadir mengikuti kegiatan',
+                    'Ekstrakurikuler Robotika hanya diikuti oleh siswa kelas IX saja'
+                ],
+                answer: 0
+            },
+            {
+                id: 20, type: 'Reguler', topic: 'Pengertian Algoritma',
+                question: 'Dalam ilmu informatika, pengertian dari <strong>Algoritma</strong> adalah...',
+                options: [
+                    'Urutan langkah-langkah logis dan sistematis yang disusun untuk menyelesaikan suatu masalah',
+                    'Perangkat keras komputer yang berfungsi memproses instruksi aritmetika dan logika',
+                    'Kumpulan data mentah yang belum diolah menjadi informasi yang bermanfaat',
+                    'Tampilan antarmuka grafis pada sistem operasi komputer modern'
+                ],
+                answer: 0
+            },
+            {
+                id: 21, type: 'Reguler', topic: 'Urutan Langkah Algoritma',
+                question: 'Mengapa urutan langkah dalam sebuah algoritma pemrograman sangat penting dan tidak boleh tertukar sembarangan?',
+                options: [
+                    'Karena komputer mengeksekusi instruksi secara berurutan; urutan yang salah dapat menyebabkan kesalahan logika atau hasil yang tidak sesuai tujuan',
+                    'Karena kode program hanya bisa disimpan jika ditulis dari baris paling bawah ke atas',
+                    'Karena urutan langkah memengaruhi kecepatan koneksi internet saat menjalankan program',
+                    'Karena komputer tidak mampu membaca instruksi yang menggunakan angka dan huruf bersamaan'
+                ],
+                answer: 0
+            },
+            {
+                id: 22, type: 'Reguler', topic: 'Urutan Pseudocode',
+                question: 'Perhatikan baris pseudocode menghitung keliling persegi berikut yang masih acak:<br>1) <code class="font-mono-code">Tampilkan Keliling</code><br>2) <code class="font-mono-code">Mulai</code><br>3) <code class="font-mono-code">Keliling ← 4 * sisi</code><br>4) <code class="font-mono-code">Input sisi</code><br>5) <code class="font-mono-code">Selesai</code><br>Urutan pseudocode yang benar adalah...',
+                options: [
+                    '2 - 4 - 3 - 1 - 5',
+                    '2 - 3 - 4 - 1 - 5',
+                    '4 - 2 - 3 - 1 - 5',
+                    '2 - 4 - 1 - 3 - 5'
+                ],
+                answer: 0
+            },
+            {
+                id: 23, type: 'Reguler', topic: 'Simbol Flowchart',
+                question: 'Pada diagram alir (flowchart), simbol berbentuk <strong>Belah Ketupat (Diamond)</strong> digunakan untuk menyatakan...',
+                options: [
+                    'Keputusan / Percabangan (Decision) yang menghasilkan kondisi Ya/True atau Tidak/False',
+                    'Awal atau akhir dari sebuah program (Terminator)',
+                    'Proses perhitungan atau pengolahan data di dalam memori',
+                    'Masukan (Input) data dari keyboard atau keluaran (Output) ke layar'
+                ],
+                answer: 0
+            },
+            {
+                id: 24, type: 'Reguler', topic: 'Input dan Output Program',
+                question: 'Sebuah program kasir meminta kasir memindai barcode barang dan mengetikkan jumlah beli, kemudian mesin mencetak struk belanja dan menampilkan total harga di layar. Yang termasuk <strong>keluaran (output)</strong> program adalah...',
+                options: [
+                    'Struk belanja tercetak dan tampilan total harga di layar',
+                    'Pemindaian kode barcode barang',
+                    'Pengetikan jumlah barang yang dibeli melalui keypad',
+                    'Proses perkalian harga satuan dengan jumlah barang'
+                ],
+                answer: 0
+            },
+            {
+                id: 25, type: 'Reguler', topic: 'Operasi Aritmetika',
+                question: 'Dalam bahasa pemrograman pada umumnya, hasil dari ekspresi aritmetika <code class="font-mono-code bg-slate-100 px-1.5 py-0.5 rounded">10 + 4 * 3 - 6 / 2</code> adalah...',
+                options: [
+                    '19',
+                    '39',
+                    '18',
+                    '21'
+                ],
+                answer: 0
+            },
+            {
+                id: 26, type: 'Reguler', topic: 'Fungsi Variabel',
+                question: 'Fungsi utama dari <strong>variabel</strong> dalam pembuatan program komputer adalah...',
+                options: [
+                    'Sebagai tempat penyimpanan nilai atau data sementara di memori komputer yang nilainya dapat berubah saat program berjalan',
+                    'Sebagai alat untuk menghubungkan komputer dengan jaringan nirkabel (Wi-Fi)',
+                    'Sebagai perintah untuk menghentikan paksa seluruh aplikasi yang sedang aktif',
+                    'Sebagai penanda komentar agar baris kode tidak dibaca oleh kompiler'
+                ],
+                answer: 0
+            },
+            {
+                id: 27, type: 'Reguler', topic: 'Operator Modulo',
+                question: 'Operator modulo (<code class="font-mono-code">%</code> atau <code class="font-mono-code">mod</code>) menghasilkan sisa pembagian bilangan bulat. Hasil dari <code class="font-mono-code bg-slate-100 px-1.5 py-0.5 rounded">29 mod 5</code> adalah...',
+                options: [
+                    '4',
+                    '5',
+                    '5,8',
+                    '1'
+                ],
+                answer: 0
+            },
+            {
+                id: 28, type: 'Reguler', topic: 'Keluaran Kondisi (If-Else)',
+                question: 'Perhatikan potongan kode berikut:<br><pre class="font-mono-code bg-slate-900 text-slate-100 p-3 rounded-xl text-xs mt-2">nilai = 78\njika nilai >= 80 maka\n    cetak("Tuntas")\nselain itu\n    cetak("Perlu Remidial")</pre><br>Keluaran yang dihasilkan oleh program tersebut adalah...',
+                options: [
+                    'Perlu Remidial',
+                    'Tuntas',
+                    '78',
+                    'Tidak menghasilkan keluaran apa pun'
+                ],
+                answer: 0
+            },
+            {
+                id: 29, type: 'Reguler', topic: 'Struktur Perulangan',
+                question: 'Struktur kontrol <strong>perulangan (looping)</strong> seperti <code class="font-mono-code">for</code> dan <code class="font-mono-code">while</code> dalam pemrograman berfungsi untuk...',
+                options: [
+                    'Menjalankan blok perintah yang sama secara berulang-ulang selama kondisi tertentu terpenuhi tanpa harus menulis kode berulang kali',
+                    'Memilih salah satu dari dua jalur instruksi berdasarkan syarat tertentu',
+                    'Menyimpan data permanen ke dalam basis data (database)',
+                    'Mengubah tampilan warna latar belakang layar monitor secara otomatis'
+                ],
+                answer: 0
+            },
+            {
+                id: 30, type: 'Reguler', topic: 'Kondisi Logika',
+                question: 'Jika variabel <code class="font-mono-code">A = True</code> dan <code class="font-mono-code">B = False</code>, maka hasil evaluasi dari ekspresi logika <code class="font-mono-code bg-slate-100 px-1.5 py-0.5 rounded">(A AND B) OR (NOT B)</code> adalah...',
+                options: [
+                    'True',
+                    'False',
+                    'Error',
+                    'Null'
+                ],
+                answer: 0
+            },
+            {
+                id: 31, type: 'Reguler', topic: 'Nilai Variabel Setelah Operasi',
+                question: 'Perhatikan urutan instruksi berikut:<br><code class="font-mono-code bg-slate-100 px-2 py-1 rounded block my-1">x ← 10<br>y ← 5<br>x ← x + y<br>y ← x - 3</code><br>Nilai akhir dari variabel <code class="font-mono-code">x</code> dan <code class="font-mono-code">y</code> berturut-turut adalah...',
+                options: [
+                    'x = 15 dan y = 12',
+                    'x = 10 dan y = 5',
+                    'x = 15 dan y = 2',
+                    'x = 12 dan y = 15'
+                ],
+                answer: 0
+            },
+            {
+                id: 32, type: 'Reguler', topic: 'Kesalahan Algoritma',
+                question: 'Seorang siswa membuat program menghitung luas segitiga dengan rumus <code class="font-mono-code">luas = alas * tinggi * 2</code>. Program berjalan tanpa pesan error, namun hasil perhitungannya selalu keliru. Jenis kesalahan ini disebut...',
+                options: [
+                    'Kesalahan logika (Logic Error)',
+                    'Kesalahan sintaksis (Syntax Error)',
+                    'Kesalahan perangkat keras (Hardware Error)',
+                    'Kesalahan jaringan (Network Error)'
+                ],
+                answer: 0
+            },
+            {
+                id: 33, type: 'Reguler', topic: 'Instruksi Berurutan',
+                question: 'Dalam struktur algoritma sekuensial (berurutan), apabila terdapat 4 baris instruksi (Baris 1, Baris 2, Baris 3, Baris 4), bagaimana cara komputer mengeksekusinya?',
+                options: [
+                    'Dieksekusi satu per satu mulai dari Baris 1, lalu Baris 2, Baris 3, hingga Baris 4 secara berurutan',
+                    'Dieksekusi secara bersamaan dalam waktu yang sama persis',
+                    'Dieksekusi secara acak tergantung baris mana yang paling pendek',
+                    'Dieksekusi mulai dari Baris 4 mundur ke Baris 1'
+                ],
+                answer: 0
+            },
+            {
+                id: 34, type: 'Reguler', topic: 'Jalur Program Kondisi',
+                question: 'Pada percabangan <code class="font-mono-code">IF (suhu > 37) THEN Nyalakan_Kipas ELSE Matikan_Kipas</code>, jika nilai variabel <code class="font-mono-code">suhu = 37</code>, maka jalur instruksi yang dijalankan adalah...',
+                options: [
+                    'Matikan_Kipas (jalur ELSE karena 37 tidak lebih besar dari 37)',
+                    'Nyalakan_Kipas (jalur IF karena 37 sama dengan 37)',
+                    'Kedua instruksi dijalankan secara bergantian',
+                    'Program berhenti karena kondisi tidak terpenuhi'
+                ],
+                answer: 0
+            },
+            {
+                id: 35, type: 'Reguler', topic: 'Bahasa Pemrograman',
+                question: 'Lingkungan pemrograman visual berbasis blok (block-based programming) yang sering digunakan di jenjang SMP untuk melatih logika pemrograman dengan cara menyusun balok perintah seperti puzzle adalah...',
+                options: [
+                    'Scratch dan Blockly',
+                    'Microsoft Word dan PowerPoint',
+                    'CorelDRAW dan Photoshop',
+                    'Windows Explorer dan Control Panel'
+                ],
+                answer: 0
+            },
+            {
+                id: 36, type: 'Reguler', topic: 'Perbandingan Logika',
+                question: 'Diketahui <code class="font-mono-code">P = 15</code> dan <code class="font-mono-code">Q = 20</code>. Pernyataan perbandingan berikut yang bernilai <strong>BENAR (True)</strong> adalah...',
+                options: [
+                    'P != Q (P tidak sama dengan Q)',
+                    'P >= Q (P lebih besar atau sama dengan Q)',
+                    'P == Q (P sama dengan Q)',
+                    'P > Q (P lebih besar dari Q)'
+                ],
+                answer: 0
+            },
+
+            // ================= 24 SOAL HOTS (C4 - C6) =================
+            {
+                id: 37, type: 'HOTS', topic: 'HOTS - Perbaikan Operator Program',
+                question: 'Budi membuat program untuk menentukan apakah sebuah bilangan bulat <code class="font-mono-code">N</code> adalah bilangan <strong>GENAP</strong>. Namun kode yang ditulisnya adalah:<br><pre class="font-mono-code bg-slate-900 text-slate-100 p-3 rounded-xl text-xs mt-2">jika (N / 2 == 0) maka\n    cetak("Bilangan Genap")</pre><br>Saat diuji dengan <code class="font-mono-code">N = 4</code>, program tidak mencetak "Bilangan Genap". Perbaikan operator yang tepat agar program sesuai tujuan adalah...',
+                options: [
+                    'Mengganti operator pembagian (/) menjadi operator sisa bagi/modulo (%) sehingga menjadi (N % 2 == 0)',
+                    'Mengganti operator perbandingan (==) menjadi tidak sama dengan (!=) sehingga menjadi (N / 2 != 0)',
+                    'Mengganti angka 2 menjadi angka 1 sehingga menjadi (N / 1 == 0)',
+                    'Mengganti operator pembagian (/) menjadi perkalian (*) sehingga menjadi (N * 2 == 0)'
+                ],
+                answer: 0
+            },
+            {
+                id: 38, type: 'HOTS', topic: 'HOTS - Analisis Keluaran Program',
+                question: 'Perhatikan potongan algoritma perulangan berikut:<br><pre class="font-mono-code bg-slate-900 text-slate-100 p-3 rounded-xl text-xs mt-2">total = 0\nuntuk i dari 1 sampai 5 lakukan:\n    jika (i % 2 != 0) maka\n        total = total + i\ncetak(total)</pre><br>Analisislah jalannya perulangan tersebut! Nilai akhir yang dicetak oleh variabel <code class="font-mono-code">total</code> adalah...',
+                options: [
+                    '9 (hasil penjumlahan bilangan ganjil 1 + 3 + 5)',
+                    '15 (hasil penjumlahan seluruh bilangan 1 + 2 + 3 + 4 + 5)',
+                    '6 (hasil penjumlahan bilangan genap 2 + 4)',
+                    '5 (nilai terakhir dari variabel i)'
+                ],
+                answer: 0
+            },
+            {
+                id: 39, type: 'HOTS', topic: 'HOTS - Studi Kasus Berpikir Komputasional',
+                question: 'Dinas Perhubungan ingin mengatasi kemacetan di persimpangan jalan raya menggunakan lampu lalu lintas pintar. Tim IT membagi masalah menjadi sub-sistem sensor kendaraan, sub-sistem pengatur durasi lampu, dan sub-sistem tampilan waktu. Mereka juga menemukan bahwa kepadatan kendaraan selalu meningkat pukul 06.30–07.30 WIB setiap hari kerja. Dua komponen berpikir komputasional yang paling menonjol pada langkah tersebut adalah...',
+                options: [
+                    'Dekomposisi (membagi sistem menjadi sub-sistem) dan Pengenalan Pola (menemukan jadwal kepadatan rutin)',
+                    'Abstraksi (menghapus lampu lalu lintas) dan Algoritma (menggambar peta jalan)',
+                    'Pengenalan Pola (membagi sub-sistem) dan Abstraksi (menghitung jumlah motor)',
+                    'Algoritma (mencatat merek mobil) dan Dekomposisi (menentukan warna lampu)'
+                ],
+                answer: 0
+            },
+            {
+                id: 40, type: 'HOTS', topic: 'HOTS - Langkah Pengolahan Data',
+                question: 'Wali kelas IX A menerima file mentah hasil asesmen dari 6 guru mata pelajaran yang format penulisan namanya berbeda-beda (ada huruf kapital semua, ada spasi berlebih, dan urutan NIS acak). Langkah pengolahan data yang paling sistematis sebelum menghitung rata-rata peringkat kelas adalah...',
+                options: [
+                    'Pembersihan data (data cleaning) untuk menyeragamkan format nama/NIS → Penggabungan tabel berdasarkan NIS → Perhitungan rata-rata (AVERAGE) → Pengurutan (Sorting) berdasarkan nilai tertinggi',
+                    'Pengurutan nilai tertinggi → Menghapus siswa yang namanya huruf kecil → Mencetak rapor langsung tanpa digabung',
+                    'Mengacak ulang seluruh baris data → Menghitung jumlah huruf pada nama siswa → Mengubah semua nilai menjadi nol',
+                    'Menyaring hanya 5 siswa teratas → Menggabungkan tabel secara manual satu per satu tanpa mencocokkan NIS'
+                ],
+                answer: 0
+            },
+            {
+                id: 41, type: 'HOTS', topic: 'HOTS - Analisis Data Tabel Kasus',
+                question: 'Perhatikan data penjualan koperasi sekolah selama 3 bulan:<br>• Buku Tulis: Jan (120), Feb (110), Mar (90) — Laba/unit: Rp1.000<br>• Pulpen: Jan (200), Feb (220), Mar (250) — Laba/unit: Rp500<br>• Penggaris: Jan (50), Feb (45), Mar (40) — Laba/unit: Rp1.500<br>Pernyataan analisis data yang paling tepat berdasarkan tabel kasus di atas adalah...',
+                options: [
+                    'Meskipun penjualan Buku Tulis menurun tiap bulan, total laba Buku Tulis selama 3 bulan (Rp320.000) masih lebih besar dibandingkan total laba Penggaris (Rp202.500)',
+                    'Pulpen memberikan total keuntungan paling kecil karena laba per unitnya hanya Rp500',
+                    'Semua jenis alat tulis mengalami peningkatan jumlah penjualan dari bulan Januari hingga Maret',
+                    'Penggaris merupakan barang yang paling diminati siswa setiap bulannya'
+                ],
+                answer: 0
+            },
+            {
+                id: 42, type: 'HOTS', topic: 'HOTS - Simpulan Didukung Data',
+                question: 'Sebuah survei terhadap 100 siswa SMPN 2 Ngadirejo mengenai durasi penggunaan gawai dan jam tidur menunjukkan: 70 siswa menggunakan gawai > 4 jam/hari, dan 63 di antaranya tidur kurang dari 6 jam/malam serta sering mengantuk di kelas. Sementara 30 siswa menggunakan gawai <= 2 jam/hari, dan 27 di antaranya tidur 7-8 jam/malam. Simpulan yang didukung kuat oleh data tersebut adalah...',
+                options: [
+                    'Terdapat korelasi positif antara tingginya durasi penggunaan gawai harian dengan berkurangnya waktu tidur malam siswa',
+                    'Seluruh siswa yang menggunakan gawai pasti mendapatkan nilai jelek di semua mata pelajaran',
+                    'Penggunaan gawai kurang dari 2 jam menyebabkan siswa kesulitan tidur di malam hari',
+                    'Tidak ada hubungan sama sekali antara kebiasaan bermain gawai dengan kualitas tidur siswa'
+                ],
+                answer: 0
+            },
+            {
+                id: 43, type: 'HOTS', topic: 'HOTS - Pengelompokan Data Kompleks',
+                question: 'Panitia lomba olimpiade sains menetapkan syarat peserta lolos ke babak final: <strong>(Nilai Teori >= 80 DAN Nilai Praktik >= 75) ATAU (Juara 1 Tingkat Kabupaten)</strong>. Berikut data 4 peserta:<br>• Andi: Teori 82, Praktik 74, bukan Juara 1 Kab.<br>• Bima: Teori 78, Praktik 90, Juara 1 Kab.<br>• Citra: Teori 80, Praktik 75, bukan Juara 1 Kab.<br>• Dedi: Teori 85, Praktik 70, bukan Juara 1 Kab.<br>Kelompok peserta yang dinyatakan <strong>LOLOS</strong> ke babak final adalah...',
+                options: [
+                    'Bima dan Citra',
+                    'Andi dan Dedi',
+                    'Andi, Bima, dan Citra',
+                    'Hanya Citra saja'
+                ],
+                answer: 0
+            },
+            {
+                id: 44, type: 'HOTS', topic: 'HOTS - Ciri Algoritma Efisien',
+                question: 'Tersedia dua algoritma untuk mencari sebuah nama siswa di dalam daftar presensi yang sudah terurut abjad dari A sampai Z (berjumlah 500 nama). Algoritma X memeriksa satu per satu mulai dari urutan ke-1 hingga ketemu. Algoritma Y langsung membagi daftar menjadi dua bagian dari tengah dan membuang bagian yang tidak sesuai berulang kali (Binary Search). Evaluasi yang tepat mengenai ciri kedua algoritma tersebut adalah...',
+                options: [
+                    'Algoritma Y jauh lebih efektif dan efisien dibandingkan Algoritma X karena jumlah langkah pencariannya jauh lebih sedikit pada data yang sudah terurut',
+                    'Algoritma X lebih cepat daripada Algoritma Y jika nama yang dicari berawalan huruf Z',
+                    'Kedua algoritma memiliki jumlah langkah yang selalu sama persis dalam segala kondisi',
+                    'Algoritma Y tidak dapat digunakan apabila jumlah data lebih dari 100 baris'
+                ],
+                answer: 0
+            },
+            {
+                id: 45, type: 'HOTS', topic: 'HOTS - Unsur Program',
+                question: 'Perhatikan kode program menghitung tarif parkir:<br><pre class="font-mono-code bg-slate-900 text-slate-100 p-3 rounded-xl text-xs mt-2">TARIF_PER_JAM = 2000\nlama_parkir = input("Masukkan jam: ")\ntotal_bayar = TARIF_PER_JAM * lama_parkir</pre><br>Pernyataan yang benar mengenai unsur-unsur pembentuk program di atas adalah...',
+                options: [
+                    'TARIF_PER_JAM berperan sebagai konstanta (nilai tetap), lama_parkir dan total_bayar sebagai variabel, serta tanda (*) sebagai operator aritmetika',
+                    'Semua kata pada kode di atas merupakan tipe data boolean yang hanya bernilai benar atau salah',
+                    'total_bayar adalah fungsi perulangan yang akan meminta input berulang kali',
+                    'TARIF_PER_JAM nilainya akan berubah otomatis setiap kali pengguna memasukkan lama_parkir'
+                ],
+                answer: 0
+            },
+            {
+                id: 46, type: 'HOTS', topic: 'HOTS - Percabangan Bertingkat',
+                question: 'Perhatikan struktur percabangan bertingkat (nested/elif) berikut:<br><pre class="font-mono-code bg-slate-900 text-slate-100 p-3 rounded-xl text-xs mt-2">skor = 84\njika skor >= 90 maka predikat = "A"\nselain jika skor >= 80 maka predikat = "B"\nselain jika skor >= 70 maka predikat = "C"\nselain itu predikat = "D"</pre><br>Jika variabel <code class="font-mono-code">skor</code> diubah menjadi <code class="font-mono-code">80</code>, mengapa program menghasilkan predikat <code class="font-mono-code">"B"</code> dan bukan <code class="font-mono-code">"C"</code> padahal 80 juga >= 70?',
+                options: [
+                    'Karena struktur percabangan mengevaluasi syarat dari atas ke bawah dan langsung berhenti/keluar dari blok percabangan begitu menemukan syarat pertama yang bernilai benar (skor >= 80)',
+                    'Karena komputer mengabaikan baris ketiga jika angka yang dimasukkan adalah bilangan genap',
+                    'Karena operator (>=) pada baris ketiga tidak berfungsi untuk angka kelipatan sepuluh',
+                    'Karena variabel predikat tidak dapat menampung huruf C dan D'
+                ],
+                answer: 0
+            },
+            {
+                id: 47, type: 'HOTS', topic: 'HOTS - Perulangan Bersyarat',
+                question: 'Perhatikan perulangan <code class="font-mono-code">WHILE</code> berikut:<br><pre class="font-mono-code bg-slate-900 text-slate-100 p-3 rounded-xl text-xs mt-2">energi = 10\nselama (energi > 0) lakukan:\n    cetak("Berlari")\n    energi = energi - 3</pre><br>Berapa kali kata <strong>"Berlari"</strong> akan dicetak ke layar dan berapa nilai akhir variabel <code class="font-mono-code">energi</code> setelah perulangan berhenti?',
+                options: [
+                    'Dicetak sebanyak 4 kali, dan nilai akhir energi adalah -2',
+                    'Dicetak sebanyak 3 kali, dan nilai akhir energi adalah 1',
+                    'Dicetak sebanyak 10 kali, dan nilai akhir energi adalah 0',
+                    'Dicetak tanpa henti (infinite loop) karena energi tidak pernah sama dengan nol'
+                ],
+                answer: 0
+            },
+            {
+                id: 48, type: 'HOTS', topic: 'HOTS - Kondisi Gabungan',
+                question: 'Diketahui variabel <code class="font-mono-code">x = 12</code>, <code class="font-mono-code">y = 8</code>, dan <code class="font-mono-code">z = 20</code>. Evaluasilah kondisi gabungan berikut:<br><code class="font-mono-code bg-slate-100 px-2 py-1 rounded block my-1">Kondisi 1: (x + y == z) AND (z % x == 8)<br>Kondisi 2: (x > y) OR (y > z)<br>Kondisi 3: NOT (x * 2 > z)</code><br>Pernyataan yang benar berdasarkan hasil evaluasi ketiga kondisi tersebut adalah...',
+                options: [
+                    'Kondisi 1 bernilai True dan Kondisi 2 bernilai True, sedangkan Kondisi 3 bernilai False',
+                    'Ketiga kondisi semuanya bernilai True',
+                    'Hanya Kondisi 3 yang bernilai True, sedangkan Kondisi 1 dan 2 bernilai False',
+                    'Kondisi 1 bernilai False karena 20 mod 12 hasilnya adalah 1'
+                ],
+                answer: 0
+            },
+            {
+                id: 49, type: 'HOTS', topic: 'HOTS - Penelusuran Program (Tracing)',
+                question: 'Telusuri program berikut dengan teliti:<br><pre class="font-mono-code bg-slate-900 text-slate-100 p-3 rounded-xl text-xs mt-2">a = 2\nb = 3\nuntuk k dari 1 sampai 3 lakukan:\n    a = a + b\n    b = b + 1\ncetak(a, b)</pre><br>Pasangan nilai <code class="font-mono-code">(a, b)</code> yang dicetak pada akhir program adalah...',
+                options: [
+                    'a = 14 dan b = 6',
+                    'a = 11 dan b = 5',
+                    'a = 9 dan b = 6',
+                    'a = 5 dan b = 4'
+                ],
+                answer: 0
+            },
+            {
+                id: 50, type: 'HOTS', topic: 'HOTS - Perbaikan Kode Bermasalah',
+                question: 'Seorang siswa menulis kode untuk menghitung rata-rata dari 3 nilai ujian (<code class="font-mono-code">n1, n2, n3</code>):<br><pre class="font-mono-code bg-slate-900 text-slate-100 p-3 rounded-xl text-xs mt-2">rata = n1 + n2 + n3 / 3</pre><br>Saat diuji dengan <code class="font-mono-code">n1 = 80, n2 = 80, n3 = 90</code>, hasilnya adalah <code class="font-mono-code">190</code>. Perbaikan kode yang paling tepat agar menghasilkan rata-rata yang benar (83.33) adalah...',
+                options: [
+                    'Menambahkan tanda kurung menjadi: rata = (n1 + n2 + n3) / 3 agar penjumlahan dikerjakan terlebih dahulu sebelum pembagian',
+                    'Mengganti tanda bagi (/) menjadi tanda kali (*) sehingga menjadi: rata = n1 + n2 + n3 * 3',
+                    'Mengubah urutan variabel menjadi: rata = n3 + n2 + n1 / 3',
+                    'Menghapus pembagian dengan angka 3 sehingga menjadi: rata = n1 + n2 + n3'
+                ],
+                answer: 0
+            },
+            {
+                id: 51, type: 'HOTS', topic: 'HOTS - Pola Data & Penerapannya',
+                question: 'Sebuah toko daring mencatat jumlah pengunjung: Hari-1 (100), Hari-2 (150), Hari-3 (225), Hari-4 (337 atau ~338). Terlihat pola pertumbuhan eksponensial sebesar 1,5 kali lipat setiap harinya. Contoh penerapan pemanfaatan pola data tersebut oleh tim IT toko daring adalah...',
+                options: [
+                    'Melakukan peningkatan kapasitas server (scaling) sebelum Hari-5 agar situs web tidak mengalami crash akibat lonjakan pengunjung',
+                    'Menonaktifkan fitur keranjang belanja pada Hari-5 karena pengunjung sudah terlalu banyak',
+                    'Menghapus seluruh riwayat transaksi Hari-1 sampai Hari-4 agar database kosong kembali',
+                    'Mengurangi jumlah stok barang karena pengunjung diprediksi akan turun menjadi nol pada Hari-5'
+                ],
+                answer: 0
+            },
+            {
+                id: 52, type: 'HOTS', topic: 'HOTS - Prediksi Nilai & Manfaat Data',
+                question: 'Perhatikan tabel konsumsi listrik bulanan laboratorium komputer:<br>• Bulan 1: 420 kWh<br>• Bulan 2: 450 kWh<br>• Bulan 3: 480 kWh<br>• Bulan 4: 510 kWh<br>Prediksi konsumsi listrik pada Bulan ke-6 dan manfaat strategis data ini bagi bendahara sekolah adalah...',
+                options: [
+                    'Prediksi Bulan ke-6 adalah 570 kWh; bermanfaat untuk merencanakan anggaran dana BOS listrik dan mengevaluasi efisiensi penggunaan AC/komputer',
+                    'Prediksi Bulan ke-6 adalah 540 kWh; bermanfaat untuk mengurangi jumlah mata pelajaran Informatika di kelas',
+                    'Prediksi Bulan ke-6 adalah 600 kWh; bermanfaat untuk mematikan seluruh komputer saat jam praktik berlangsung',
+                    'Prediksi Bulan ke-6 adalah 510 kWh; bermanfaat untuk menghapus tagihan listrik bulan sebelumnya'
+                ],
+                answer: 0
+            },
+            {
+                id: 53, type: 'HOTS', topic: 'HOTS - Menyusun Pseudocode Luas',
+                question: 'Manakah rancangan pseudocode lengkap dan paling tepat untuk menghitung luas persegi panjang yang dilengkapi validasi agar nilai panjang dan lebar tidak boleh bernilai nol atau negatif?',
+                options: [
+                    'Mulai → Input panjang, lebar → Jika (panjang > 0 DAN lebar > 0) Maka luas ← panjang * lebar; Cetak luas; Selain Itu Cetak "Input tidak valid" → Selesai',
+                    'Mulai → luas ← panjang * lebar → Input panjang, lebar → Cetak luas → Selesai',
+                    'Mulai → Input panjang, lebar → Jika (panjang < 0 ATAU lebar < 0) Maka luas ← panjang + lebar; Cetak luas → Selesai',
+                    'Mulai → Cetak luas → Input panjang, lebar → luas ← 2 * (panjang + lebar) → Selesai'
+                ],
+                answer: 0
+            },
+            {
+                id: 54, type: 'HOTS', topic: 'HOTS - Penelusuran Kondisi Gabungan',
+                question: 'Telusuri nilai variabel pada potongan algoritma berikut:<br><pre class="font-mono-code bg-slate-900 text-slate-100 p-3 rounded-xl text-xs mt-2">p = 15\nq = 4\nr = p % q\np = p - r\njika (p >= 12) DAN (r == 3) maka\n    status = "VALID"\nselain itu\n    status = "INVALID"</pre><br>Hasil penelusuran nilai akhir <code class="font-mono-code">p</code>, <code class="font-mono-code">r</code>, dan <code class="font-mono-code">status</code> adalah...',
+                options: [
+                    'p = 12, r = 3, dan status = "VALID"',
+                    'p = 15, r = 3, dan status = "VALID"',
+                    'p = 11, r = 4, dan status = "INVALID"',
+                    'p = 12, r = 1, dan status = "INVALID"'
+                ],
+                answer: 0
+            },
+            {
+                id: 55, type: 'HOTS', topic: 'HOTS - Program Total Pembelian & Diskon',
+                question: 'Sebuah toko memberikan aturan: <em>"Jika total belanja minimal Rp100.000, pembeli mendapat diskon 10% dari total belanja; jika kurang dari Rp100.000, tidak mendapat diskon."</em> Susunan logika program yang benar untuk menghitung <code class="font-mono-code">bayar</code> jika inputnya adalah <code class="font-mono-code">total_belanja</code> adalah...',
+                options: [
+                    'jika total_belanja >= 100000 maka diskon = 0.10 * total_belanja; selain itu diskon = 0; bayar = total_belanja - diskon',
+                    'jika total_belanja > 100000 maka diskon = 10; bayar = total_belanja - diskon',
+                    'diskon = 0.10 * total_belanja; jika total_belanja < 100000 maka bayar = total_belanja - diskon',
+                    'jika total_belanja <= 100000 maka bayar = total_belanja * 0.90; selain itu bayar = total_belanja'
+                ],
+                answer: 0
+            },
+            {
+                id: 56, type: 'HOTS', topic: 'HOTS - Evaluasi Efisiensi Algoritma',
+                question: 'Rina diminta menjumlahkan seluruh bilangan asli dari 1 sampai 100. Cara pertama menggunakan perulangan yang menjumlahkan satu per satu (100 langkah). Cara kedua menggunakan rumus deret aritmetika Gauss: <code class="font-mono-code">hasil = 100 * (100 + 1) / 2</code> (1 langkah). Kesimpulan analisis yang tepat adalah...',
+                options: [
+                    'Cara kedua memiliki kompleksitas waktu konstan (jauh lebih cepat dan hemat sumber daya prosesor) dibandingkan cara pertama dengan hasil yang sama-sama akurat (5050)',
+                    'Cara pertama lebih akurat karena komputer tidak dapat melakukan perkalian dan pembagian secara bersamaan',
+                    'Cara kedua hanya menghasilkan angka perkiraan sehingga tidak boleh digunakan dalam pemrograman',
+                    'Cara pertama membutuhkan waktu lebih singkat daripada cara kedua jika angkanya diperbesar menjadi 1 juta'
+                ],
+                answer: 0
+            },
+            {
+                id: 57, type: 'HOTS', topic: 'HOTS - Studi Kasus Filter & Sort Data',
+                question: 'Dari tabel data 150 pelamar kerja yang berisi kolom: <em>Nama, Usia, Pendidikan, Pengalaman (Tahun),</em> dan <em>Skor Tes</em>. HRD ingin mencari <strong>3 kandidat terbaik</strong> yang berusia maksimal 25 tahun dan memiliki pengalaman minimal 2 tahun. Urutan kombinasi fitur pengolah data yang paling tepat adalah...',
+                options: [
+                    'Filter kolom Usia (<= 25) dan Filter kolom Pengalaman (>= 2) → Urutkan (Sort) kolom Skor Tes secara Descending (Terbesar ke Terkecil) → Ambil 3 baris teratas',
+                    'Sort kolom Nama secara Ascending → Ambil 3 baris teratas → Filter kolom Usia (<= 25)',
+                    'Hapus semua pelamar yang usianya di bawah 25 tahun → Sort kolom Pengalaman secara Ascending',
+                    'Gunakan rumus SUM pada kolom Usia → Filter kolom Skor Tes paling kecil'
+                ],
+                answer: 0
+            },
+            {
+                id: 58, type: 'HOTS', topic: 'HOTS - Debugging Perulangan',
+                question: 'Perhatikan kode berikut yang bertujuan mencetak angka 10, 8, 6, 4, 2:<br><pre class="font-mono-code bg-slate-900 text-slate-100 p-3 rounded-xl text-xs mt-2">angka = 10\nselama (angka >= 2) lakukan:\n    cetak(angka)\n    angka = angka + 2</pre><br>Mengapa kode tersebut menyebabkan <em>infinite loop</em> (perulangan tak terbatas) dan bagaimana memperbaikinya?',
+                options: [
+                    'Karena nilai angka terus bertambah (+2) sehingga selalu >= 2; perbaikannya adalah mengubah baris terakhir menjadi angka = angka - 2',
+                    'Karena kondisi (angka >= 2) salah; perbaikannya mengubah tanda >= menjadi ==',
+                    'Karena perintah cetak(angka) harus diletakkan di luar blok perulangan',
+                    'Karena variabel angka seharusnya dimulai dari nilai 0 bukan 10'
+                ],
+                answer: 0
+            },
+            {
+                id: 59, type: 'HOTS', topic: 'HOTS - Algoritma Konversi Waktu',
+                question: 'Sebuah program menerima input total waktu dalam satuan detik (misal <code class="font-mono-code">detik_total = 3725</code>) dan harus mengonversinya menjadi format jam, menit, dan sisa detik. Rumus aritmetika yang tepat untuk mendapatkan nilai <code class="font-mono-code">jam</code>, <code class="font-mono-code">menit</code>, dan <code class="font-mono-code">sisa_detik</code> (dengan <code class="font-mono-code">div</code> = pembagian bulat) adalah...',
+                options: [
+                    'jam = detik_total div 3600; menit = (detik_total % 3600) div 60; sisa_detik = detik_total % 60',
+                    'jam = detik_total % 3600; menit = detik_total div 60; sisa_detik = detik_total * 60',
+                    'jam = detik_total div 60; menit = detik_total div 3600; sisa_detik = detik_total % 3600',
+                    'jam = detik_total / 100; menit = detik_total / 60; sisa_detik = detik_total - 60'
+                ],
+                answer: 0
+            },
+            {
+                id: 60, type: 'HOTS', topic: 'HOTS - Sintesis Berpikir Komputasional',
+                question: 'Dalam membangun aplikasi sistem presensi wajah otomatis di SMP Negeri 2 Ngadirejo, langkah-langkah berikut dilakukan:<br>1) Mengabaikan warna baju dan latar belakang tembok saat kamera memindai wajah siswa.<br>2) Menyusun urutan proses: Deteksi Wajah → Cocokkan Database → Catat Jam Masuk → Tampilkan Status Hadir.<br>Pasangan pilar berpikir komputasional untuk langkah (1) dan (2) secara berurutan adalah...',
+                options: [
+                    'Abstraksi dan Algoritma',
+                    'Dekomposisi dan Pengenalan Pola',
+                    'Pengenalan Pola dan Abstraksi',
+                    'Algoritma dan Dekomposisi'
+                ],
+                answer: 0
+            }
+        ];
+
+        // =====================================================================
+        // STATE MANAGEMENT & KONSTANTA UJIAN
+        // =====================================================================
+        const EXAM_CONFIG = {
+            totalDisplayed: 50,
+            regulerCount: 30,
+            hotsCount: 20,
+            maxDurationSeconds: 90 * 60, // 90 Menit (5400 detik)
+            minDurationSeconds: 40 * 60, // 40 Menit (2400 detik)
+            kktp: 80,
+            storageKey: 'cbt_inf9_smpn2ngadirejo_state_v1'
+        };
+
+        let examState = {
+            status: 'login', // 'login' | 'ongoing' | 'finished'
+            student: {
+                name: '',
+                studentClass: '',
+                absent: ''
+            },
+            questions: [], // 50 soal terpilih & teracak
+            answers: {},   // { qIndex: selectedOptionIndex }
+            doubts: {},    // { qIndex: boolean }
+            currentIndex: 0,
+            startTime: null,
+            endTime: null,
+            remainingSeconds: EXAM_CONFIG.maxDurationSeconds,
+            elapsedSeconds: 0,
+            result: null
+        };
+
+        let timerInterval = null;
+        let realtimeClockInterval = null;
+
+        // =====================================================================
+        // HELPER: CUSTOM MODAL (PENGGANTI ALERT / CONFIRM)
+        // =====================================================================
+        function showModal({ title, message, type = 'info', confirmText = 'Mengerti', cancelText = null, onConfirm = null }) {
+            const modal = document.getElementById('custom-modal');
+            const titleEl = document.getElementById('modal-title');
+            const msgEl = document.getElementById('modal-message');
+            const iconBox = document.getElementById('modal-icon-box');
+            const icon = document.getElementById('modal-icon');
+            const confirmBtn = document.getElementById('modal-confirm-btn');
+            const cancelBtn = document.getElementById('modal-cancel-btn');
+
+            titleEl.textContent = title;
+            msgEl.innerHTML = message;
+            confirmBtn.textContent = confirmText;
+
+            // Reset icon styles
+            iconBox.className = 'w-10 h-10 rounded-full flex items-center justify-center text-lg shrink-0';
+            if (type === 'warning') {
+                iconBox.classList.add('bg-amber-100', 'text-amber-600');
+                icon.className = 'fa-solid fa-triangle-exclamation';
+                confirmBtn.className = 'px-5 py-2 rounded-xl text-sm font-semibold text-white bg-amber-600 hover:bg-amber-700 shadow-sm transition';
+            } else if (type === 'danger') {
+                iconBox.classList.add('bg-rose-100', 'text-rose-600');
+                icon.className = 'fa-solid fa-circle-exclamation';
+                confirmBtn.className = 'px-5 py-2 rounded-xl text-sm font-semibold text-white bg-rose-600 hover:bg-rose-700 shadow-sm transition';
+            } else if (type === 'success') {
+                iconBox.classList.add('bg-emerald-100', 'text-emerald-600');
+                icon.className = 'fa-solid fa-circle-check';
+                confirmBtn.className = 'px-5 py-2 rounded-xl text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm transition';
+            } else {
+                iconBox.classList.add('bg-blue-100', 'text-blue-600');
+                icon.className = 'fa-solid fa-circle-info';
+                confirmBtn.className = 'px-5 py-2 rounded-xl text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 shadow-sm transition';
+            }
+
+            if (cancelText) {
+                cancelBtn.textContent = cancelText;
+                cancelBtn.classList.remove('hidden');
+            } else {
+                cancelBtn.classList.add('hidden');
+            }
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            const closeModal = () => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            };
+
+            cancelBtn.onclick = closeModal;
+            confirmBtn.onclick = () => {
+                closeModal();
+                if (typeof onConfirm === 'function') onConfirm();
+            };
+        }
+
+        // =====================================================================
+        // HELPER: FULL SCREEN & KEAMANAN CBT
+        // =====================================================================
+        function requestFullScreenMode() {
+            const elem = document.documentElement;
+            if (!document.fullscreenElement) {
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen().catch(() => {});
+                } else if (elem.webkitRequestFullscreen) {
+                    elem.webkitRequestFullscreen();
+                } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen();
+                }
+            }
+        }
+
+        function toggleFullScreen() {
+            if (!document.fullscreenElement) {
+                requestFullScreenMode();
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen().catch(() => {});
+                }
+            }
+        }
+
+        document.addEventListener('fullscreenchange', () => {
+            const icon = document.getElementById('fullscreen-icon');
+            const banner = document.getElementById('security-banner');
+            if (document.fullscreenElement) {
+                if (icon) icon.className = 'fa-solid fa-compress';
+                if (banner) banner.classList.add('hidden');
+            } else {
+                if (icon) icon.className = 'fa-solid fa-expand';
+                if (examState.status === 'ongoing' && banner) {
+                    document.getElementById('security-banner-text').textContent = 'Anda keluar dari mode Layar Penuh! Klik tombol di samping untuk kembali.';
+                    banner.classList.remove('hidden');
+                }
+            }
+        });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && examState.status === 'ongoing') {
+                const banner = document.getElementById('security-banner');
+                document.getElementById('security-banner-text').textContent = 'Peringatan: Sistem mendeteksi Anda berpindah tab/jendela!';
+                banner.classList.remove('hidden');
+            }
+        });
+
+        // =====================================================================
+        // REAL-TIME CLOCK (WIB)
+        // =====================================================================
+        function startRealtimeClock() {
+            const updateClock = () => {
+                const now = new Date();
+                const options = {
+                    timeZone: 'Asia/Jakarta',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                };
+                const timeStr = new Intl.DateTimeFormat('id-ID', options).format(now).replace(/\./g, ':') + ' WIB';
+                const loginClock = document.getElementById('login-realtime-clock');
+                const examClock = document.getElementById('exam-realtime-clock');
+                if (loginClock) loginClock.textContent = timeStr;
+                if (examClock) examClock.textContent = timeStr;
+            };
+            updateClock();
+            realtimeClockInterval = setInterval(updateClock, 1000);
+        }
+
+        // =====================================================================
+        // PENGACAKAN SOAL & OPSI JAWABAN (FISHER-YATES SHUFFLE)
+        // =====================================================================
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function generateRandomizedExamQuestions() {
+            // Pisahkan bank soal Reguler (36) dan HOTS (24)
+            const regulerPool = QUESTION_BANK.filter(q => q.type === 'Reguler');
+            const hotsPool = QUESTION_BANK.filter(q => q.type === 'HOTS');
+
+            // Ambil 30 Reguler acak & 20 HOTS acak
+            const selectedReguler = shuffleArray(regulerPool).slice(0, EXAM_CONFIG.regulerCount);
+            const selectedHots = shuffleArray(hotsPool).slice(0, EXAM_CONFIG.hotsCount);
+
+            // Gabungkan dan acak urutan ke-50 soal
+            const combined = shuffleArray([...selectedReguler, ...selectedHots]);
+
+            // Acak opsi jawaban pada masing-masing soal sambil melacak kunci jawaban yang benar
+            return combined.map((q, idx) => {
+                const optionObjects = q.options.map((optText, optIdx) => ({
+                    text: optText,
+                    isCorrect: optIdx === q.answer
+                }));
+                const shuffledOptions = shuffleArray(optionObjects);
+                const newCorrectIndex = shuffledOptions.findIndex(o => o.isCorrect);
+
+                return {
+                    number: idx + 1,
+                    originalId: q.id,
+                    type: q.type,
+                    topic: q.topic,
+                    question: q.question,
+                    options: shuffledOptions.map(o => o.text),
+                    correctIndex: newCorrectIndex
+                };
+            });
+        }
+
+        // =====================================================================
+        // INISIALISASI & PENYIMPANAN STATE
+        // =====================================================================
+        function saveState() {
+            try {
+                localStorage.setItem(EXAM_CONFIG.storageKey, JSON.stringify(examState));
+            } catch (e) {
+                console.warn('Gagal menyimpan ke localStorage:', e);
+            }
+        }
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(EXAM_CONFIG.storageKey);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (parsed && parsed.status) {
+                        examState = parsed;
+                        return true;
+                    }
+                }
+            } catch (e) {
+                console.warn('Gagal membaca localStorage:', e);
+            }
+            return false;
+        }
+
+        // =====================================================================
+        // FORM LOGIN & MULAI UJIAN
+        // =====================================================================
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('student-name').value.trim();
+            const studentClass = document.getElementById('student-class').value;
+            const absent = document.getElementById('student-absent').value.trim();
+
+            if (!name || !studentClass || !absent) {
+                showModal({
+                    title: 'Data Belum Lengkap',
+                    message: 'Harap isi Nama Lengkap, Kelas, dan Nomor Absen Anda terlebih dahulu.',
+                    type: 'warning'
+                });
+                return;
+            }
+
+            // Aktifkan Full Screen
+            requestFullScreenMode();
+
+            // Setup state baru
+            examState = {
+                status: 'ongoing',
+                student: { name, studentClass, absent },
+                questions: generateRandomizedExamQuestions(),
+                answers: {},
+                doubts: {},
+                currentIndex: 0,
+                startTime: Date.now(),
+                endTime: null,
+                remainingSeconds: EXAM_CONFIG.maxDurationSeconds,
+                elapsedSeconds: 0,
+                result: null
+            };
+
+            saveState();
+            enterExamScreen();
+        });
+
+        function enterExamScreen() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.add('hidden');
+            document.getElementById('exam-screen').classList.remove('hidden');
+
+            document.getElementById('header-student-info').textContent =
+                `Peserta: ${examState.student.name} | Kelas: ${examState.student.studentClass} (Absen ${examState.student.absent})`;
+
+            renderQuestionGrid();
+            renderCurrentQuestion();
+            startExamTimer();
+        }
+
+        // =====================================================================
+        // TIMER UJIAN (HITUNGAN MUNDUR 90 MENIT & KUNCI MINIMAL 40 MENIT)
+        // =====================================================================
+        function formatMMSS(totalSeconds) {
+            const sec = Math.max(0, Math.floor(totalSeconds));
+            const m = Math.floor(sec / 60);
+            const s = sec % 60;
+            return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+        }
+
+        function startExamTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+
+            const tick = () => {
+                const now = Date.now();
+                const elapsed = Math.floor((now - examState.startTime) / 1000);
+                const remaining = Math.max(0, EXAM_CONFIG.maxDurationSeconds - elapsed);
+
+                examState.elapsedSeconds = elapsed;
+                examState.remainingSeconds = remaining;
+
+                // Update tampilan countdown utama
+                const timerEl = document.getElementById('countdown-timer');
+                const countdownBox = document.getElementById('countdown-box');
+                timerEl.textContent = formatMMSS(remaining);
+
+                // Ubah warna jika waktu sisa < 10 menit
+                if (remaining <= 600) {
+                    countdownBox.className = 'flex items-center gap-2.5 bg-rose-50 border border-rose-300 px-3.5 py-1.5 rounded-xl animate-pulse';
+                    timerEl.className = 'font-mono-code text-sm sm:text-base font-extrabold text-rose-700';
+                }
+
+                // Cek syarat waktu minimal 40 menit (2400 detik)
+                const submitBtn = document.getElementById('btn-submit-exam');
+                const minNotice = document.getElementById('min-time-notice');
+                const minCountdown = document.getElementById('min-time-countdown');
+
+                if (elapsed < EXAM_CONFIG.minDurationSeconds) {
+                    const waitSeconds = EXAM_CONFIG.minDurationSeconds - elapsed;
+                    minCountdown.textContent = formatMMSS(waitSeconds);
+                    submitBtn.disabled = true;
+                    submitBtn.className = 'w-full py-3 px-4 rounded-xl font-bold text-sm text-white bg-slate-400 cursor-not-allowed transition flex items-center justify-center gap-2 shadow-sm';
+                } else {
+                    minNotice.innerHTML = '<i class="fa-solid fa-lock-open text-emerald-600 mr-1"></i> Waktu minimal terpenuhi. Ujian siap dikumpulkan.';
+                    minNotice.className = 'text-[11px] text-center text-emerald-700 mb-2 bg-emerald-50 border border-emerald-200 py-1.5 px-2 rounded-lg font-semibold';
+                    submitBtn.disabled = false;
+                    submitBtn.className = 'w-full py-3 px-4 rounded-xl font-bold text-sm text-white bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] cursor-pointer transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20';
+                }
+
+                // Auto submit jika waktu 90 menit habis
+                if (remaining <= 0) {
+                    clearInterval(timerInterval);
+                    finishExam(true);
+                }
+            };
+
+            tick();
+            timerInterval = setInterval(() => {
+                tick();
+                saveState();
+            }, 1000);
+        }
+
+        // =====================================================================
+        // RENDER SOAL & NAVIGASI NOMOR
+        // =====================================================================
+        function renderCurrentQuestion() {
+            const idx = examState.currentIndex;
+            const q = examState.questions[idx];
+            if (!q) return;
+
+            document.getElementById('current-q-number').textContent = q.number;
+            document.getElementById('current-q-topic').textContent = `Indikator: ${q.topic}`;
+
+            const badge = document.getElementById('current-q-badge');
+            if (q.type === 'HOTS') {
+                badge.textContent = '★ Soal HOTS (Penalaran)';
+                badge.className = 'text-xs font-bold px-3 py-1 rounded-full bg-purple-100 text-purple-700 border border-purple-200';
+            } else {
+                badge.textContent = 'Reguler';
+                badge.className = 'text-xs font-bold px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200';
+            }
+
+            document.getElementById('question-text').innerHTML = q.question;
+
+            // Render opsi A, B, C, D
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            const optionLetters = ['A', 'B', 'C', 'D'];
+            const selectedOpt = examState.answers[idx];
+
+            q.options.forEach((optText, optIdx) => {
+                const isSelected = selectedOpt === optIdx;
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => selectOption(optIdx);
+
+                btn.className = isSelected
+                    ? 'w-full text-left p-4 rounded-2xl border-2 border-blue-600 bg-blue-50/80 transition flex items-start gap-3.5 shadow-sm'
+                    : 'w-full text-left p-4 rounded-2xl border border-slate-200 bg-white hover:border-blue-300 hover:bg-slate-50 transition flex items-start gap-3.5';
+
+                btn.innerHTML = `
+                    <span class="w-8 h-8 rounded-xl flex items-center justify-center font-bold text-sm shrink-0 transition ${
+                        isSelected ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-700'
+                    }">${optionLetters[optIdx]}</span>
+                    <span class="text-sm sm:text-base text-slate-800 pt-1 leading-relaxed">${optText}</span>
+                `;
+                optionsContainer.appendChild(btn);
+            });
+
+            // Update tombol navigasi bawah
+            document.getElementById('btn-prev').disabled = idx === 0;
+            const nextBtn = document.getElementById('btn-next');
+            if (idx === examState.questions.length - 1) {
+                nextBtn.innerHTML = '<span>Selesai Tinjau</span> <i class="fa-solid fa-check"></i>';
+            } else {
+                nextBtn.innerHTML = '<span>Selanjutnya</span> <i class="fa-solid fa-chevron-right"></i>';
+            }
+
+            // Update tombol ragu-ragu
+            const isDoubt = !!examState.doubts[idx];
+            const doubtBtn = document.getElementById('btn-doubt');
+            const doubtText = document.getElementById('btn-doubt-text');
+            if (isDoubt) {
+                doubtBtn.className = 'px-4 sm:px-5 py-2.5 rounded-xl font-bold text-sm bg-amber-500 text-white hover:bg-amber-600 transition flex items-center gap-2 shadow-sm';
+                doubtText.textContent = 'Ditandai Ragu';
+            } else {
+                doubtBtn.className = 'px-4 sm:px-5 py-2.5 rounded-xl font-semibold text-sm bg-amber-100 border border-amber-300 text-amber-800 hover:bg-amber-200 transition flex items-center gap-2 shadow-sm';
+                doubtText.textContent = 'Ragu-ragu';
+            }
+
+            updateGridHighlight();
+        }
+
+        function renderQuestionGrid() {
+            const grid = document.getElementById('question-grid');
+            grid.innerHTML = '';
+
+            examState.questions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.id = `grid-btn-${idx}`;
+                btn.textContent = q.number;
+                btn.onclick = () => {
+                    examState.currentIndex = idx;
+                    saveState();
+                    renderCurrentQuestion();
+                };
+                grid.appendChild(btn);
+            });
+
+            updateGridHighlight();
+        }
+
+        function updateGridHighlight() {
+            let answeredCount = 0;
+
+            examState.questions.forEach((q, idx) => {
+                const btn = document.getElementById(`grid-btn-${idx}`);
+                if (!btn) return;
+
+                const isAnswered = examState.answers[idx] !== undefined;
+                const isDoubt = !!examState.doubts[idx];
+                const isCurrent = examState.currentIndex === idx;
+
+                if (isAnswered) answeredCount++;
+
+                let baseClass = 'h-9 rounded-lg font-bold text-xs transition flex items-center justify-center ';
+                if (isCurrent) {
+                    baseClass += 'ring-2 ring-blue-600 ring-offset-1 ';
+                }
+
+                if (isDoubt) {
+                    baseClass += 'bg-amber-400 text-slate-900 hover:bg-amber-500';
+                } else if (isAnswered) {
+                    baseClass += 'bg-emerald-500 text-white hover:bg-emerald-600';
+                } else {
+                    baseClass += 'bg-slate-100 text-slate-600 border border-slate-200 hover:bg-slate-200';
+                }
+
+                btn.className = baseClass;
+            });
+
+            document.getElementById('answered-counter').textContent = `${answeredCount} / 50 Dijawab`;
+        }
+
+        function selectOption(optIdx) {
+            examState.answers[examState.currentIndex] = optIdx;
+            saveState();
+            renderCurrentQuestion();
+        }
+
+        function toggleDoubt() {
+            const idx = examState.currentIndex;
+            examState.doubts[idx] = !examState.doubts[idx];
+            saveState();
+            renderCurrentQuestion();
+        }
+
+        function prevQuestion() {
+            if (examState.currentIndex > 0) {
+                examState.currentIndex--;
+                saveState();
+                renderCurrentQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (examState.currentIndex < examState.questions.length - 1) {
+                examState.currentIndex++;
+                saveState();
+                renderCurrentQuestion();
+            } else {
+                const answeredCount = Object.keys(examState.answers).length;
+                showModal({
+                    title: 'Akhir Daftar Soal',
+                    message: `Anda berada di nomor terakhir (No. 50). Saat ini Anda telah menjawab <strong>${answeredCount} dari 50 soal</strong>. Silakan periksa kembali nomor yang masih kosong atau ragu-ragu sebelum menekan tombol <strong>Kumpulkan Ujian</strong>.`,
+                    type: 'info'
+                });
+            }
+        }
+
+        // =====================================================================
+        // PENGUMPULAN UJIAN & PERHITUNGAN NILAI
+        // =====================================================================
+        function confirmSubmitExam() {
+            if (examState.elapsedSeconds < EXAM_CONFIG.minDurationSeconds) {
+                const sisa = formatMMSS(EXAM_CONFIG.minDurationSeconds - examState.elapsedSeconds);
+                showModal({
+                    title: 'Belum Dapat Dikumpulkan',
+                    message: `Sesuai tata tertib ujian, waktu minimal pengerjaan adalah <strong>40 menit</strong>. Silakan tunggu <strong>${sisa}</strong> lagi untuk mengumpulkan jawaban.`,
+                    type: 'warning'
+                });
+                return;
+            }
+
+            const answeredCount = Object.keys(examState.answers).length;
+            const unansweredCount = EXAM_CONFIG.totalDisplayed - answeredCount;
+            const doubtCount = Object.values(examState.doubts).filter(Boolean).length;
+
+            let warningText = `Apakah Anda yakin ingin mengakhiri dan mengumpulkan ujian sekarang?`;
+            if (unansweredCount > 0 || doubtCount > 0) {
+                warningText += `<br><br><span class="text-amber-700 font-semibold">Perhatian: Masih ada ${unansweredCount} soal belum dijawab dan ${doubtCount} soal ditandai ragu-ragu.</span>`;
+            }
+
+            showModal({
+                title: 'Konfirmasi Pengumpulan Ujian',
+                message: warningText,
+                type: 'warning',
+                confirmText: 'Ya, Kumpulkan Sekarang',
+                cancelText: 'Periksa Kembali',
+                onConfirm: () => finishExam(false)
+            });
+        }
+
+        function finishExam(isAutoSubmit = false) {
+            if (timerInterval) clearInterval(timerInterval);
+
+            examState.status = 'finished';
+            examState.endTime = Date.now();
+
+            // Hitung skor
+            let correctTotal = 0;
+            let correctReguler = 0;
+            let correctHots = 0;
+
+            examState.questions.forEach((q, idx) => {
+                const userAns = examState.answers[idx];
+                if (userAns !== undefined && userAns === q.correctIndex) {
+                    correctTotal++;
+                    if (q.type === 'Reguler') correctReguler++;
+                    if (q.type === 'HOTS') correctHots++;
+                }
+            });
+
+            // 50 soal * 2 poin = 100
+            const score = correctTotal * 2;
+            const wrongTotal = EXAM_CONFIG.totalDisplayed - correctTotal;
+            const isPassed = score >= EXAM_CONFIG.kktp;
+
+            const durationSec = Math.min(EXAM_CONFIG.maxDurationSeconds, Math.max(1, Math.floor((examState.endTime - examState.startTime) / 1000)));
+            const durMinutes = Math.floor(durationSec / 60);
+            const durSeconds = durationSec % 60;
+
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            const timestampStr = now.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }) + ' WIB';
+
+            examState.result = {
+                score,
+                correctTotal,
+                wrongTotal,
+                correctReguler,
+                correctHots,
+                isPassed,
+                durationFormatted: `${durMinutes} menit ${durSeconds} detik`,
+                dateStr,
+                timestampStr
+            };
+
+            saveState();
+
+            if (isAutoSubmit) {
+                showModal({
+                    title: 'Waktu Ujian Habis',
+                    message: 'Waktu pengerjaan 90 menit telah berakhir. Jawaban Anda telah dikumpulkan secara otomatis oleh sistem.',
+                    type: 'info',
+                    onConfirm: showResultScreen
+                });
+            } else {
+                showResultScreen();
+            }
+        }
+
+        function showResultScreen() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('exam-screen').classList.add('hidden');
+            document.getElementById('result-screen').classList.remove('hidden');
+
+            // Keluar dari full screen agar siswa mudah mencetak/menyimpan file
+            if (document.fullscreenElement && document.exitFullscreen) {
+                document.exitFullscreen().catch(() => {});
+            }
+
+            const r = examState.result;
+            const s = examState.student;
+
+            document.getElementById('res-name').textContent = s.name;
+            document.getElementById('res-class-absent').textContent = `${s.studentClass} / No. Absen ${s.absent}`;
+            document.getElementById('res-date').textContent = r.dateStr;
+            document.getElementById('res-duration').textContent = r.durationFormatted;
+            document.getElementById('res-timestamp').textContent = r.timestampStr;
+
+            document.getElementById('final-score-display').textContent = r.score;
+            document.getElementById('res-correct').textContent = r.correctTotal;
+            document.getElementById('res-wrong').textContent = r.wrongTotal;
+            document.getElementById('res-reguler').textContent = `${r.correctReguler} / 30`;
+            document.getElementById('res-hots').textContent = `${r.correctHots} / 20`;
+
+            const banner = document.getElementById('kktp-status-banner');
+            const iconBox = document.getElementById('kktp-icon-box');
+            const icon = document.getElementById('kktp-icon');
+            const statusText = document.getElementById('kktp-status-text');
+
+            if (r.isPassed) {
+                banner.className = 'rounded-2xl p-4 sm:p-5 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 border bg-emerald-50 border-emerald-300 text-emerald-900';
+                iconBox.className = 'w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shrink-0 bg-emerald-600 text-white shadow-sm';
+                icon.className = 'fa-solid fa-trophy';
+                statusText.textContent = 'TUNTAS / MELAMPAUI KKTP (≥ 80)';
+            } else {
+                banner.className = 'rounded-2xl p-4 sm:p-5 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 border bg-rose-50 border-rose-300 text-rose-900';
+                iconBox.className = 'w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shrink-0 bg-rose-600 text-white shadow-sm';
+                icon.className = 'fa-solid fa-book-open-reader';
+                statusText.textContent = 'BELUM TUNTAS / PERLU REMIDIAL (< 80)';
+            }
+        }
+
+        // =====================================================================
+        // FITUR UNDUH NILAI (CSV & HTML REPORT)
+        // =====================================================================
+        function downloadCSV() {
+            const s = examState.student;
+            const r = examState.result;
+            const statusLabel = r.isPassed ? 'TUNTAS' : 'REMIDIAL';
+
+            const headers = [
+                'Sekolah', 'Mata Pelajaran', 'Kelas', 'Semester', 'Guru Pengampu',
+                'Nama Siswa', 'Nomor Absen', 'Tanggal Ujian', 'Durasi Pengerjaan',
+                'Benar Reguler (30)', 'Benar HOTS (20)', 'Total Benar (50)', 'Total Salah',
+                'Nilai Akhir', 'KKTP', 'Status Ketercapaian'
+            ];
+
+            const row = [
+                '"SMP NEGERI 2 NGADIREJO"',
+                '"Informatika"',
+                `"${s.studentClass}"`,
+                '"1 (Ganjil)"',
+                '"Budi Winarno, S.Kom."',
+                `"${s.name}"`,
+                `"${s.absent}"`,
+                `"${r.dateStr}"`,
+                `"${r.durationFormatted}"`,
+                r.correctReguler,
+                r.correctHots,
+                r.correctTotal,
+                r.wrongTotal,
+                r.score,
+                EXAM_CONFIG.kktp,
+                `"${statusLabel}"`
+            ];
+
+            const csvContent = '\uFEFF' + headers.join(',') + '\n' + row.join(',');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+
+            const cleanName = s.name.replace(/[^a-zA-Z0-9]/g, '_');
+            const cleanClass = s.studentClass.replace(/\s+/g, '');
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Nilai_Informatika_${cleanClass}_${s.absent}_${cleanName}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadHTMLReport() {
+            const s = examState.student;
+            const r = examState.result;
+            const printContent = document.getElementById('print-area').outerHTML;
+
+            const htmlDoc = `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Bukti Nilai CBT - ${s.name} (${s.studentClass})</title>
+<script src="https://cdn.tailwindcss.com"><\/script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>body { font-family: 'Inter', sans-serif; background: #f1f5f9; padding: 2rem; }</style>
+</head>
+<body>
+<div class="max-w-3xl mx-auto">
+${printContent}
+</div>
+</body>
+</html>`;
+
+            const blob = new Blob([htmlDoc], { type: 'text/html;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const cleanName = s.name.replace(/[^a-zA-Z0-9]/g, '_');
+            const cleanClass = s.studentClass.replace(/\s+/g, '');
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Bukti_Hasil_CBT_${cleanClass}_${cleanName}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function resetAndRestart() {
+            showModal({
+                title: 'Mulai Ujian Baru?',
+                message: 'Data hasil ujian sebelumnya akan dihapus dari sesi browser ini. Pastikan Anda sudah mengunduh/mencetak bukti nilai sebelum melanjutkan.',
+                type: 'warning',
+                confirmText: 'Ya, Reset & Ujian Baru',
+                cancelText: 'Batal',
+                onConfirm: () => {
+                    localStorage.removeItem(EXAM_CONFIG.storageKey);
+                    location.reload();
+                }
+            });
+        }
+
+        // =====================================================================
+        // WINDOW ONLOAD BOOTSTRAP
+        // =====================================================================
+        window.onload = function() {
+            startRealtimeClock();
+
+            if (loadState()) {
+                if (examState.status === 'ongoing') {
+                    // Cek apakah waktu sebenarnya sudah habis saat browser tertutup
+                    const elapsedNow = Math.floor((Date.now() - examState.startTime) / 1000);
+                    if (elapsedNow >= EXAM_CONFIG.maxDurationSeconds) {
+                        finishExam(true);
+                    } else {
+                        enterExamScreen();
+                    }
+                } else if (examState.status === 'finished' && examState.result) {
+                    showResultScreen();
+                }
+            }
+        };
+    </script>
+</body>
+</html>
