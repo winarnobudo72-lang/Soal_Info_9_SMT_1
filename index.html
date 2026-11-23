@@ -1157,7 +1157,7 @@
             regulerCount: 30,
             hotsCount: 20,
             maxDurationSeconds: 90 * 60, // 90 Menit (5400 detik)
-            minDurationSeconds: 20 * 60, // 20 Menit (2400 detik)
+            minDurationSeconds: 10 * 60, // 10 Menit (600 detik)
             kktp: 80,
             storageKey: 'cbt_inf9_smpn2ngadirejo_state_v1'
         };
@@ -1470,7 +1470,7 @@
                     timerEl.className = 'font-mono-code text-sm sm:text-base font-extrabold text-rose-700';
                 }
 
-                // Cek syarat waktu minimal 40 menit (2400 detik)
+                // Cek syarat waktu minimal 10 menit (600 detik)
                 const submitBtn = document.getElementById('btn-submit-exam');
                 const minNotice = document.getElementById('min-time-notice');
                 const minCountdown = document.getElementById('min-time-countdown');
